@@ -12,6 +12,7 @@ public class EdgeComputationServiceApplicationTests {
     @Test
     public void contextLoads() {
         System.out.print("test");
+        System.out.print("test");
 
     }
 
