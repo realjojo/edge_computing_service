@@ -5,10 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
-public class EdgeComputationServiceApplication {
+public class EdgeComputingServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(EdgeComputationServiceApplication.class, args);
+        SpringApplication.run(EdgeComputingServiceApplication.class, args);
 
     }
 

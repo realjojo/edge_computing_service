@@ -1,1 +1,1 @@
-# edge_computation_service
+# edge_computing_service
