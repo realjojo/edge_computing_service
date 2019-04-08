@@ -5,15 +5,18 @@ import org.apache.ibatis.annotations.*;
 
 public interface UserMapper {
 
-    @Select("SELECT # FROM user WHERE id=#{id};")
+    @Select("SELECT * FROM user WHERE id=#{id};")
     User getById(@Param("id") String id);
+
+    @Select("SELECT * FROM user WHERE username=#{userName} AND password=#{password};")
+    User getByUserNameAndPassword(@Param("userName") String userName, @Param("password") String password);
 
     @Select("SELECT token_create_at FROM user WHERE id =#{id};")
     String getTokenCreateTime(@Param("id") String id);
 
     @Insert("INSERT INTO user(uid,username,password,phone,create_at,token_create_at) " +
             "VALUES(#{uid},#{userName},#{password},#{phone},#{create_at},#{token_create_at});")
-    void createUser(User user);
+    User createUser(User user);
 
     @Update("UPDATE user SET token_create_at=#{tokenCreateTime} WHERE id =#{id};")
     void updateTokenCreateTimeById(@Param("tokenCreateTime") String tokenCreateTime, @Param("id") String id);
