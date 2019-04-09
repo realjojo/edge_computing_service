@@ -10,8 +10,23 @@ public class Device {
     @ApiModelProperty(value = "设备编号")
     private String deviceNo;
 
-    @ApiModelProperty(value = "设备状态")
+    @ApiModelProperty(value = "设备连接状态")
     private boolean deviceStatus;
+
+    @ApiModelProperty(value = "设备类型")
+    private String deviceType;
+
+    @ApiModelProperty(value = "所属用户")
+    private String uid;
+
+    @ApiModelProperty(value = "cpu资源利用率")
+    private double cpuUsageRate;
+
+    @ApiModelProperty(value = "内存资源利用率")
+    private double memoryUsageRate;
+
+    @ApiModelProperty(value = "剩余电量百分比")
+    private double dumpEnergyRate;
 
     public String getId() {
         return id;
@@ -35,6 +50,46 @@ public class Device {
 
     public boolean isDeviceStatus() {
         return deviceStatus;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public double getCpuUsageRate() {
+        return cpuUsageRate;
+    }
+
+    public void setCpuUsageRate(double cpuUsageRate) {
+        this.cpuUsageRate = cpuUsageRate;
+    }
+
+    public String getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
+    }
+
+    public double getDumpEnergyRate() {
+        return dumpEnergyRate;
+    }
+
+    public void setDumpEnergyRate(double dumpEnergyRate) {
+        this.dumpEnergyRate = dumpEnergyRate;
+    }
+
+    public double getMemoryUsageRate() {
+        return memoryUsageRate;
+    }
+
+    public void setMemoryUsageRate(double memoryUsageRate) {
+        this.memoryUsageRate = memoryUsageRate;
     }
 
     @Override
