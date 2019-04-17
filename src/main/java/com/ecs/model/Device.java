@@ -16,17 +16,11 @@ public class Device {
     @ApiModelProperty(value = "设备类型")
     private String deviceType;
 
-    @ApiModelProperty(value = "所属用户")
+    @ApiModelProperty(value = "所属用户id")
     private String uid;
 
-    @ApiModelProperty(value = "cpu资源利用率")
-    private double cpuUsageRate;
-
-    @ApiModelProperty(value = "内存资源利用率")
-    private double memoryUsageRate;
-
-    @ApiModelProperty(value = "剩余电量百分比")
-    private double dumpEnergyRate;
+    @ApiModelProperty(value = "所属用户")
+    private String userName;
 
     public String getId() {
         return id;
@@ -60,12 +54,12 @@ public class Device {
         this.uid = uid;
     }
 
-    public double getCpuUsageRate() {
-        return cpuUsageRate;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setCpuUsageRate(double cpuUsageRate) {
-        this.cpuUsageRate = cpuUsageRate;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getDeviceType() {
@@ -76,24 +70,9 @@ public class Device {
         this.deviceType = deviceType;
     }
 
-    public double getDumpEnergyRate() {
-        return dumpEnergyRate;
-    }
-
-    public void setDumpEnergyRate(double dumpEnergyRate) {
-        this.dumpEnergyRate = dumpEnergyRate;
-    }
-
-    public double getMemoryUsageRate() {
-        return memoryUsageRate;
-    }
-
-    public void setMemoryUsageRate(double memoryUsageRate) {
-        this.memoryUsageRate = memoryUsageRate;
-    }
-
     @Override
     public String toString() {
         return "Device{" + "device_no=" + deviceNo + ", deviceStatus=" + deviceStatus + "}";
     }
+
 }

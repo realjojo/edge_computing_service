@@ -7,7 +7,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.ecs.model.Exception.EdgeComputingServiceException;
-import com.ecs.model.Response.ResponseMessage;
+import com.ecs.model.Response.ResponseEnum;
 
 import java.util.Date;
 
@@ -41,7 +41,7 @@ public class CommonUtil {
             jwt = verifier.verify(token);
         } catch (JWTVerificationException exception) {
             //无效签名或者无效token
-            throw new EdgeComputingServiceException(403, ResponseMessage.ERROR, message);
+            throw new EdgeComputingServiceException(ResponseEnum.ERROR.getCode(), ResponseEnum.ERROR.getMessage());
         }
         return jwt;
     }

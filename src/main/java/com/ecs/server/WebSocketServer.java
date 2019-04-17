@@ -1,72 +1,104 @@
 package com.ecs.server;
-import java.util.concurrent.CopyOnWriteArraySet;
-
-import javax.websocket.OnClose;
-import javax.websocket.OnError;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
-import javax.websocket.server.PathParam;
-import javax.websocket.server.ServerEndpoint;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
-@ServerEndpoint("/WebSocket/{id}/{name}")
-@RestController
+import javax.websocket.*;
+import javax.websocket.server.PathParam;
+import javax.websocket.server.ServerEndpoint;
+import java.io.IOException;
+import java.util.concurrent.CopyOnWriteArraySet;
+
+@Component
+@ServerEndpoint(value = "/ws/webSocket/{clientId}")
 public class WebSocketServer {
-
-    // 用来记录当前连接数的变量
-    private static volatile int onlineCount = 0;
-
-    // concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象
-    private static CopyOnWriteArraySet<WebSocketServer> webSocketSet = new CopyOnWriteArraySet<WebSocketServer>();
-
-    // 与某个客户端的连接会话，需要通过它来与客户端进行数据收发
+    //每个客户端都会有相应的session,服务端可以发送相关消息
     private Session session;
 
+    private String clientId;
+
+    //J.U.C包下线程安全的类，主要用来存放每个客户端对应的webSocket连接
+    private static CopyOnWriteArraySet<WebSocketServer> copyOnWriteArraySet = new CopyOnWriteArraySet<WebSocketServer>();
+
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketServer.class);
-    
+
+    private static final String targetClientId = "1";
+
+    private static String targetClientSessionId;
+
     @OnOpen
-    public void onOpen(Session session, @PathParam("id") long id, @PathParam("name") String name) throws Exception {
+    public void onOpen(@PathParam("clientId")String clientId, Session session) {
         this.session = session;
-        System.out.println(this.session.getId());
-        webSocketSet.add(this);
-        LOGGER.info("Open a websocket. id={}, name={}", id, name);
+        this.clientId = clientId;
+        if(clientId.equals(targetClientId)) {
+            targetClientSessionId = session.getId();
+        }
+        copyOnWriteArraySet.add(this);
+        LOGGER.info("websocket有新的连接, 总数:"+ copyOnWriteArraySet.size());
     }
 
     @OnClose
     public void onClose() {
-        webSocketSet.remove(this);
-        LOGGER.info("Close a websocket. ");
+        copyOnWriteArraySet.remove(this);
+        LOGGER.info("websocket连接断开, 总数:"+ copyOnWriteArraySet.size());
     }
 
     @OnMessage
-    public void onMessage(String message, Session session) {
-        LOGGER.info("Receive a message from client: " + message);
+    public void onMessage(String message) {
+        LOGGER.info("websocket收到客户端发来的消息:" + message);
+        sendMessage(targetClientSessionId, message);
     }
 
     @OnError
     public void onError(Session session, Throwable error) {
-        LOGGER.error("Error while websocket. ", error);
+        LOGGER.info("发生错误：" + error.getMessage() + session.getId());
+        error.printStackTrace();
     }
 
-    public void sendMessage(String message) throws Exception {
-        if (this.session.isOpen()) {
-            this.session.getBasicRemote().sendText("Send a message from server. ");
+    /**
+     * 用于给指定客户端发送消息
+     * @param message
+     */
+    public void sendMessage(String mySessionId, String message) {
+        //遍历客户端
+        for (WebSocketServer webSocket : copyOnWriteArraySet) {
+            LOGGER.info("websocket向指定客户端发送消息：" + message);
+            if(webSocket.session.getId().equals(mySessionId)) {
+                try {
+                    webSocket.session.getBasicRemote().sendText(message);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            } else {
+                LOGGER.info("error" + mySessionId);
+            }
         }
     }
 
-    public static synchronized int getOnlineCount() {
-        return onlineCount;
+    /**
+     * 用于发送给客户端消息（群发）
+     * @param message
+     */
+    public void sendMessage(String message) {
+        //遍历客户端
+        for (WebSocketServer webSocket : copyOnWriteArraySet) {
+            LOGGER.info("websocket广播消息：" + message);
+            try {
+                //服务器主动推送
+                webSocket.session.getBasicRemote().sendText(message);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-    public static synchronized void addOnlineCount() {
-        WebSocketServer.onlineCount++;
+    @Bean
+    public ServerEndpointExporter serverEndpointExporter() {
+        return new ServerEndpointExporter();
     }
 
-    public static synchronized void subOnlineCount() {
-        WebSocketServer.onlineCount--;
-    }
 }

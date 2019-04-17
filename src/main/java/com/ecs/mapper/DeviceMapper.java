@@ -5,16 +5,19 @@ import org.apache.ibatis.annotations.*;
 
 public interface DeviceMapper {
 
-    @Select("SELECT * FROM device WHERE device_no=#{deviceNo};")
-    Device getByDeviceNo(@Param("device_no") String deviceNo);
+    @Select("SELECT * FROM device WHERE id=#{id};")
+    Device getByDeviceId(@Param("id") String id);
 
-    @Insert("INSERT INTO device(device_no,device_status) VALUES(#{deviceNo},#{deviceStatus});")
-    Device createDevice(Device device);
+    @Select("SELECT * FROM device WHERE device_no=#{deviceNo};")
+    Device getByDeviceNo(@Param("deviceNo") String deviceNo);
+
+    @Insert("INSERT INTO device(device_no,device_status,uid,device_type) VALUES(#{deviceNo},#{deviceStatus},#{uid},#{deviceType});")
+    Integer createDevice(Device device);
 
     @Delete("DELETE FROM device WHERE device_no=#{deviceNo};")
-    void deleteByDeviceNo(@Param("device_no") String deviceNo);
+    void deleteByDeviceNo(@Param("deviceNo") String deviceNo);
 
     @Update("UPDATE device SET device_status=#{deviceStatus} WHERE id=#{id};")
-    Device updateDeviceStatusById(@Param("device_status") boolean deviceStatus, @Param("id") String id);
+    Integer updateDeviceStatusById(@Param("deviceStatus") boolean deviceStatus, @Param("id") String id);
 
 }

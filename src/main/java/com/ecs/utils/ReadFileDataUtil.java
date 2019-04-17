@@ -2,21 +2,18 @@ package com.ecs.utils;
 
 import com.ecs.model.PrisonerGps;
 import com.ecs.model.PrisonerPhysiologicalData;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Zhaoone on 2019/4/2
  **/
-public class ReadFIleDataUtil {
+public class ReadFileDataUtil {
     private static final String mysqlSdfPatternString = "yyyy-MM-dd HH:mm";
     private static final Date now = new Date();
     private static final SimpleDateFormat sdf = new SimpleDateFormat(mysqlSdfPatternString);

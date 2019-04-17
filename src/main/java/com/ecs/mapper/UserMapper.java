@@ -8,6 +8,15 @@ public interface UserMapper {
     @Select("SELECT * FROM user WHERE id=#{id};")
     User getById(@Param("id") String id);
 
+    @Select("SELECT * FROM user WHERE username=#{userName};")
+    User getByUserName(@Param("userName") String userName);
+
+    @Select("SELECT id FROM user WHERE username=#{userName};")
+    String getUidByUserName(@Param("userName") String userName);
+
+    @Select("SELECT username FROM user WHERE id=#{id};")
+    String getUserNameByUid(@Param("id") String id);
+
     @Select("SELECT * FROM user WHERE username=#{userName} AND password=#{password};")
     User getByUserNameAndPassword(@Param("userName") String userName, @Param("password") String password);
 
@@ -16,7 +25,7 @@ public interface UserMapper {
 
     @Insert("INSERT INTO user(uid,username,password,phone,create_at,token_create_at) " +
             "VALUES(#{uid},#{userName},#{password},#{phone},#{create_at},#{token_create_at});")
-    User createUser(User user);
+    void createUser(User user);
 
     @Update("UPDATE user SET token_create_at=#{tokenCreateTime} WHERE id =#{id};")
     void updateTokenCreateTimeById(@Param("tokenCreateTime") String tokenCreateTime, @Param("id") String id);

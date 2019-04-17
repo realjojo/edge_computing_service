@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
  * Created by Zhaoone on 2019/4/2
  **/
 public class PrisonerGps {
+
     @ApiModelProperty(value = "当前时间")
     private String current_time;
 
@@ -49,4 +50,5 @@ public class PrisonerGps {
     public void setHeight(String height) {
         this.height = height;
     }
+
 }

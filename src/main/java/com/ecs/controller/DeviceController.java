@@ -1,8 +1,10 @@
 package com.ecs.controller;
 
+import com.ecs.mapper.UserMapper;
 import com.ecs.model.Device;
+import com.ecs.model.Request.DeviceRegisterRequest;
 import com.ecs.model.Response.HttpResponseContent;
-import com.ecs.model.Response.ResponseMessage;
+import com.ecs.model.Response.ResponseEnum;
 import com.ecs.service.DeviceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,43 +19,81 @@ import org.springframework.web.bind.annotation.*;
 public class DeviceController {
 
     private final DeviceService deviceService;
+    private final UserMapper userMapper;
 
     @Autowired
-    public DeviceController(DeviceService deviceService) {
+    public DeviceController(DeviceService deviceService, UserMapper userMapper) {
         this.deviceService = deviceService;
+        this.userMapper = userMapper;
     }
 
     @ApiOperation(value = "获取设备信息")
     @RequestMapping(path = "/get", method = RequestMethod.GET)
-    public Device getByDeviceNo(@RequestParam("device_no") String deviceNo) {
-        return deviceService.getByDeviceNo(deviceNo);
+    public HttpResponseContent getByDeviceNo(@RequestParam("deviceNo") String deviceNo) {
+        HttpResponseContent response = new HttpResponseContent();
+        Device device = deviceService.getByDeviceNo(deviceNo);
+        if(device == null) {
+            response.setCode(ResponseEnum.DEVICE_NOT_EXIST.getCode());
+            response.setMessage(ResponseEnum.DEVICE_NOT_EXIST.getMessage());
+        } else {
+            response.setCode(ResponseEnum.SUCCESS.getCode());
+            response.setMessage(ResponseEnum.SUCCESS.getMessage());
+            response.setData(device);
+        }
+        return response;
     }
 
     @ApiOperation(value = "注册新设备")
     @RequestMapping(path = "/register", method = RequestMethod.POST)
-    public Device createDevice(@RequestBody Device device) {
-        return deviceService.createDevice(device);
+    public HttpResponseContent createDevice(@RequestBody DeviceRegisterRequest deviceRegisterRequest) {
+        HttpResponseContent response = new HttpResponseContent();
+        Integer num = deviceService.createDevice(deviceRegisterRequest);
+        if(!num.equals(1)) {
+            response.setCode(ResponseEnum.DEVICE_REGISTER_FAIL.getCode());
+            response.setMessage(ResponseEnum.DEVICE_REGISTER_FAIL.getMessage());
+        } else {
+            response.setCode(ResponseEnum.SUCCESS.getCode());
+            response.setMessage(ResponseEnum.SUCCESS.getMessage());
+            Device device = deviceService.getByDeviceNo(deviceRegisterRequest.getDeviceNo());
+            device.setUserName(deviceRegisterRequest.getUserName());
+            response.setData(device);
+        }
+        return response;
     }
 
     @ApiOperation(value = "设备登入")
-    @RequestMapping(path = "/login/{device_id}", method = RequestMethod.PUT)
-    public Device deviceLogin(@PathVariable("device_id") String id) {
-        return deviceService.deviceLogin(id);
+    @RequestMapping(path = "/login", method = RequestMethod.PUT)
+    public HttpResponseContent deviceLogin(@RequestParam("id") String id) {
+        HttpResponseContent response = new HttpResponseContent();
+        deviceService.deviceLogin(id);
+        response.setCode(ResponseEnum.SUCCESS.getCode());
+        response.setMessage(ResponseEnum.SUCCESS.getMessage());
+        Device device = deviceService.getByDeviceId(id);
+        device.setUserName(userMapper.getUserNameByUid(device.getUid()));
+        response.setData(device);
+        return response;
     }
 
     @ApiOperation(value = "设备登出")
-    @RequestMapping(path = "/logout/{device_id}", method = RequestMethod.PUT)
-    public Device deviceLogout(@PathVariable("device_id") String id) {
-        return deviceService.deviceLogout(id);
+    @RequestMapping(path = "/logout", method = RequestMethod.PUT)
+    public HttpResponseContent deviceLogout(@RequestParam("id") String id) {
+        HttpResponseContent response = new HttpResponseContent();
+        deviceService.deviceLogout(id);
+        response.setCode(ResponseEnum.SUCCESS.getCode());
+        response.setMessage(ResponseEnum.SUCCESS.getMessage());
+        Device device = deviceService.getByDeviceId(id);
+        device.setUserName(userMapper.getUserNameByUid(device.getUid()));
+        response.setData(device);
+        return response;
     }
 
     @ApiOperation(value = "设备注销")
     @RequestMapping(path = "/delete", method = RequestMethod.DELETE)
-    public HttpResponseContent deleteDevice(@RequestParam("device_no") String deviceNo) {
+    public HttpResponseContent deleteDevice(@RequestParam("deviceNo") String deviceNo) {
         HttpResponseContent response = new HttpResponseContent();
         deviceService.deleteDevice(deviceNo);
-        response.setResponseCode(200);
-        response.setContent(ResponseMessage.SUCCESS);
+        response.setCode(ResponseEnum.SUCCESS.getCode());
+        response.setMessage(ResponseEnum.SUCCESS.getMessage());
         return response;
     }
 }

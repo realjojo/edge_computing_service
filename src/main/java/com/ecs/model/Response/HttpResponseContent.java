@@ -2,23 +2,34 @@ package com.ecs.model.Response;
 
 public class HttpResponseContent {
 
-    private Integer responseCode;
-    private String content;
+    private Integer code;
 
-    public Integer getResponseCode() {
-        return responseCode;
+    private String message;
+
+    private Object data;
+
+    public Integer getCode() {
+        return code;
     }
 
-    public void setResponseCode(Integer responseCode) {
-        this.responseCode = responseCode;
+    public void setCode(Integer code) {
+        this.code = code;
     }
 
-    public String getContent() {
-        return content;
+    public String getMessage() {
+        return message;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
     }
 
 }

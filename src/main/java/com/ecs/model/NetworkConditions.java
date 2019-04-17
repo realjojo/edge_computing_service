@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
  * Created by Zhaoone on 2019/4/2
  **/
 public class NetworkConditions {
+
     @ApiModelProperty(value = "网络时延")
     private String delay;
 
@@ -27,4 +28,5 @@ public class NetworkConditions {
     public void setPacket_loss(String packet_loss) {
         this.packet_loss = packet_loss;
     }
+
 }
