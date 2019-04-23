@@ -13,6 +13,12 @@ public class UserRegisterRequest {
 
     private String confirmPassword;
 
+    public UserRegisterRequest(String userName, String password, String confirmPassword) {
+        this.userName = userName;
+        this.password = password;
+        this.confirmPassword = confirmPassword;
+    }
+
     public void setUserName(String userName) {
         this.userName = userName;
     }

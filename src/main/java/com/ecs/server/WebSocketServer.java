@@ -25,6 +25,7 @@ public class WebSocketServer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketServer.class);
 
+    //指定客户端，将设备信息发送过去
     private static final String targetClientId = "1";
 
     private static String targetClientSessionId;

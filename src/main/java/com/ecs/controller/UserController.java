@@ -43,8 +43,9 @@ public class UserController {
 
     @ApiOperation(value = "用户登陆")
     @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public HttpResponseContent userLogin(@RequestBody LoginRequest loginRequest) throws Exception {
+    public HttpResponseContent userLogin(@RequestParam("userName") String userName, @RequestParam("password") String password) throws Exception {
         HttpResponseContent response = new HttpResponseContent();
+        LoginRequest loginRequest = new LoginRequest(userName, password);
         User user = userService.userLogin(loginRequest);
         if(user == null) {
             response.setCode(ResponseEnum.LOGIN_FAILED.getCode());
@@ -69,8 +70,9 @@ public class UserController {
 
     @ApiOperation(value = "新用户注册")
     @RequestMapping(path = "/register", method = RequestMethod.POST)
-    public HttpResponseContent createUser(@RequestBody UserRegisterRequest userRegisterRequest) {
+    public HttpResponseContent createUser(@RequestParam("userName") String userName, @RequestParam("password") String password, @RequestParam("confirmPwd") String confirmPwd) {
         HttpResponseContent response = new HttpResponseContent();
+        UserRegisterRequest userRegisterRequest = new UserRegisterRequest(userName, password, confirmPwd);
         if(userService.getByUserName(userRegisterRequest.getUserName()) != null) {
             response.setCode(ResponseEnum.USERNAME_EXIST.getCode());
             response.setMessage(ResponseEnum.USERNAME_EXIST.getMessage());

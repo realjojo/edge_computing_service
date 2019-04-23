@@ -14,4 +14,8 @@
 
 * **webSocket向指定客户端推送消息一直失败**  
 **问题原因：** 用于记录指定客户端sessionId的属性为private String类型，不是静态属性  
-**解决方式：** 将targetClientSessionId改为static静态属性
+**解决方式：** 将targetClientSessionId改为static静态属性  
+
+* **@RequestBody注解导致android端请求失败，错误码400**  
+**问题原因：** @RequestBody注解用于接收content-type为application/json的数据，而android客户端采用OkHttp发送请求，封装的请求方法采用默认的application/x-www-form-urlcoded编码  
+**解决方式：** 将@RequestBody改为@RequestParam，android客户端post提交表单。参考CSDN博客：[https://blog.csdn.net/ljxbbss/article/details/74452326](https://blog.csdn.net/ljxbbss/article/details/74452326)，[https://blog.csdn.net/SmileorSilence/article/details/82996105](https://blog.csdn.net/SmileorSilence/article/details/82996105)，[https://blog.csdn.net/blueheart20/article/details/45174399](https://blog.csdn.net/blueheart20/article/details/45174399)
