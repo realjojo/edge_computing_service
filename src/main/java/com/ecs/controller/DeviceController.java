@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "/devices")
 @EnableAutoConfiguration
@@ -43,18 +45,24 @@ public class DeviceController {
         return response;
     }
 
+    @ApiOperation(value = "获取所有设备信息")
+    @RequestMapping(path = "/get_all", method = RequestMethod.GET)
+    public List<Device> getAll() {
+        return deviceService.getAll();
+    }
+
     @ApiOperation(value = "注册新设备")
     @RequestMapping(path = "/register", method = RequestMethod.POST)
-    public HttpResponseContent createDevice(@RequestBody DeviceRegisterRequest deviceRegisterRequest) {
+    public HttpResponseContent createDevice(@RequestParam("deviceType") String deviceType, @RequestParam("userName") String userName) {
         HttpResponseContent response = new HttpResponseContent();
-        Integer num = deviceService.createDevice(deviceRegisterRequest);
-        if(!num.equals(1)) {
+        DeviceRegisterRequest deviceRegisterRequest = new DeviceRegisterRequest(deviceType, userName);
+        Device device = deviceService.createDevice(deviceRegisterRequest);
+        if(device == null) {
             response.setCode(ResponseEnum.DEVICE_REGISTER_FAIL.getCode());
             response.setMessage(ResponseEnum.DEVICE_REGISTER_FAIL.getMessage());
         } else {
             response.setCode(ResponseEnum.SUCCESS.getCode());
             response.setMessage(ResponseEnum.SUCCESS.getMessage());
-            Device device = deviceService.getByDeviceNo(deviceRegisterRequest.getDeviceNo());
             device.setUserName(deviceRegisterRequest.getUserName());
             response.setData(device);
         }

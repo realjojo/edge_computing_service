@@ -22,10 +22,10 @@ public class User {
     private String phone;
 
     @ApiModelProperty(value = "账号创建时间")
-    private Timestamp create_at;
+    private Timestamp createAt;
 
     @ApiModelProperty(value = "token生成时间")
-    private String token_create_at;
+    private String tokenCreateAt;
 
     @ApiModelProperty(value = "登录token")
     private String loginToken;
@@ -70,20 +70,20 @@ public class User {
         this.phone = phone;
     }
 
-    public Timestamp getCreate_at() {
-        return create_at;
+    public Timestamp getCreateAt() {
+        return createAt;
     }
 
-    public void setCreate_at(Timestamp create_at) {
-        this.create_at = create_at;
+    public void setCreateAt(Timestamp createAt) {
+        this.createAt = createAt;
     }
 
-    public String getToken_create_at() {
-        return token_create_at;
+    public String getTokenCreateAt() {
+        return tokenCreateAt;
     }
 
-    public void setToken_create_at(String token_create_at) {
-        this.token_create_at = token_create_at;
+    public void setTokenCreateAt(String tokenCreateAt) {
+        this.tokenCreateAt = tokenCreateAt;
     }
 
     public String getLoginToken() {

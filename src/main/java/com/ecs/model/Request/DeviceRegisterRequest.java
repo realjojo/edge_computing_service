@@ -11,7 +11,10 @@ public class DeviceRegisterRequest {
 
     private String userName;
 
-    private String deviceNo;
+    public DeviceRegisterRequest(String deviceType, String userName) {
+        this.deviceType = deviceType;
+        this.userName = userName;
+    }
 
     public String getUserName() {
         return userName;
@@ -29,11 +32,4 @@ public class DeviceRegisterRequest {
         this.deviceType = deviceType;
     }
 
-    public String getDeviceNo() {
-        return deviceNo;
-    }
-
-    public void setDeviceNo(String deviceNo) {
-        this.deviceNo = deviceNo;
-    }
 }

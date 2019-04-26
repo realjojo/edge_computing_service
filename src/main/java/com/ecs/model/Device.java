@@ -2,6 +2,8 @@ package com.ecs.model;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import java.sql.Timestamp;
+
 public class Device {
 
     @ApiModelProperty(value = "设备id")
@@ -15,6 +17,9 @@ public class Device {
 
     @ApiModelProperty(value = "设备类型")
     private String deviceType;
+
+    @ApiModelProperty(value = "设备创建时间")
+    private Timestamp createAt;
 
     @ApiModelProperty(value = "所属用户id")
     private String uid;
@@ -70,9 +75,17 @@ public class Device {
         this.deviceType = deviceType;
     }
 
+    public Timestamp getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Timestamp createAt) {
+        this.createAt = createAt;
+    }
+
     @Override
     public String toString() {
-        return "Device{" + "device_no=" + deviceNo + ", deviceStatus=" + deviceStatus + "}";
+        return "Device{" + "device_no=" + deviceNo + ", deviceStatus=" + deviceStatus + ", createAt=" + createAt + "}";
     }
 
 }

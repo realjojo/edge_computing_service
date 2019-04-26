@@ -5,8 +5,6 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.ecs.mapper.UserMapper;
 import com.ecs.model.Exception.EdgeComputingServiceException;
 import com.ecs.model.Request.LoginRequest;
-import com.ecs.model.Request.UserRegisterRequest;
-import com.ecs.model.Response.HttpResponseContent;
 import com.ecs.model.Response.ResponseEnum;
 import com.ecs.model.User;
 import com.ecs.utils.CommonUtil;
@@ -57,7 +55,7 @@ public class UserService {
             //将token返回作为登录凭证
             user.setLoginToken(token);
             user.setPassword(null);
-            user.setToken_create_at(null);
+            user.setTokenCreateAt(null);
         }
         return user;
     }
@@ -73,8 +71,9 @@ public class UserService {
 
     public String getUserIdFromToken(String token) throws Exception {
         SimpleDateFormat mysqlSdf = new java.text.SimpleDateFormat(mysqlSdfPatternString);
-        if (Objects.equals(token, "noToken"))
+        if (Objects.equals(token, "noToken")) {
             throw new EdgeComputingServiceException(ResponseEnum.DO_NOT_LOGIN.getCode(), ResponseEnum.DO_NOT_LOGIN.getMessage());
+        }
         Date now = new Date();
         DecodedJWT jwt = CommonUtil.phraseJWT(token, "EdgeComputingService", ResponseEnum.INVALID_USER_TOKEN.getMessage());
         String userId = JSONObject.parseObject(jwt.getSubject()).getString("uid");

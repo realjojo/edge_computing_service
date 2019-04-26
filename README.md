@@ -18,4 +18,8 @@
 
 * **@RequestBody注解导致android端请求失败，错误码400**  
 **问题原因：** @RequestBody注解用于接收content-type为application/json的数据，而android客户端采用OkHttp发送请求，封装的请求方法采用默认的application/x-www-form-urlcoded编码  
-**解决方式：** 将@RequestBody改为@RequestParam，android客户端post提交表单。参考CSDN博客：[https://blog.csdn.net/ljxbbss/article/details/74452326](https://blog.csdn.net/ljxbbss/article/details/74452326)，[https://blog.csdn.net/SmileorSilence/article/details/82996105](https://blog.csdn.net/SmileorSilence/article/details/82996105)，[https://blog.csdn.net/blueheart20/article/details/45174399](https://blog.csdn.net/blueheart20/article/details/45174399)
+**解决方式：** 将@RequestBody改为@RequestParam，android客户端post提交表单。参考CSDN博客：[https://blog.csdn.net/ljxbbss/article/details/74452326](https://blog.csdn.net/ljxbbss/article/details/74452326)，[https://blog.csdn.net/SmileorSilence/article/details/82996105](https://blog.csdn.net/SmileorSilence/article/details/82996105)，[https://blog.csdn.net/blueheart20/article/details/45174399](https://blog.csdn.net/blueheart20/article/details/45174399)  
+
+* **查询数据库中的记录，返回的数据的create_at字段为null**  
+**问题原因：** 实体类中的属性名一般为驼峰命名，而在数据库中一般以_连接单词来命名，由于在properties文件中打开了驼峰命名转换，因此在查询数据时就无法查询到实体类中以‘_’连接命名的属性值  
+**解决方式：** 将实体类中所有属性名都改为以驼峰命名法来命名  

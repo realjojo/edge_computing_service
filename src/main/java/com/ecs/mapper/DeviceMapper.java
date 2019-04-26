@@ -3,6 +3,8 @@ package com.ecs.mapper;
 import com.ecs.model.Device;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+
 public interface DeviceMapper {
 
     @Select("SELECT * FROM device WHERE id=#{id};")
@@ -10,6 +12,12 @@ public interface DeviceMapper {
 
     @Select("SELECT * FROM device WHERE device_no=#{deviceNo};")
     Device getByDeviceNo(@Param("deviceNo") String deviceNo);
+
+    @Select("SELECT * FROM device WHERE uid=#{uid} AND device_type=#{deviceType};")
+    Device getByUserIdAndType(@Param("uid") String uid, @Param("deviceType") String deviceType);
+
+    @Select("SELECT * FROM device;")
+    List<Device> getAll();
 
     @Insert("INSERT INTO device(device_no,device_status,uid,device_type) VALUES(#{deviceNo},#{deviceStatus},#{uid},#{deviceType});")
     Integer createDevice(Device device);
