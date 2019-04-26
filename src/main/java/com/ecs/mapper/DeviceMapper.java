@@ -7,16 +7,53 @@ import java.util.List;
 
 public interface DeviceMapper {
 
+    //property是实体类属性，column是数据库字段
     @Select("SELECT * FROM device WHERE id=#{id};")
+    @Results({
+            @Result(id = true, column = "id", property = "id"),
+            @Result(column = "device_no", property = "deviceNo"),
+            @Result(column = "device_status", property = "deviceStatus"),
+            @Result(column = "device_type", property = "deviceType"),
+            @Result(column = "uid", property = "uid"),
+            @Result(column = "create_at", property = "createAt"),
+            @Result(column = "uid", property = "user", one = @One(select = "com.ecs.mapper.UserMapper.getById"))
+    })
     Device getByDeviceId(@Param("id") String id);
 
     @Select("SELECT * FROM device WHERE device_no=#{deviceNo};")
+    @Results({
+            @Result(id = true, column = "id", property = "id"),
+            @Result(column = "device_no", property = "deviceNo"),
+            @Result(column = "device_status", property = "deviceStatus"),
+            @Result(column = "device_type", property = "deviceType"),
+            @Result(column = "uid", property = "uid"),
+            @Result(column = "create_at", property = "createAt"),
+            @Result(column = "uid", property = "user", one = @One(select = "com.ecs.mapper.UserMapper.getById"))
+    })
     Device getByDeviceNo(@Param("deviceNo") String deviceNo);
 
     @Select("SELECT * FROM device WHERE uid=#{uid} AND device_type=#{deviceType};")
+    @Results({
+            @Result(id = true, column = "id", property = "id"),
+            @Result(column = "device_no", property = "deviceNo"),
+            @Result(column = "device_status", property = "deviceStatus"),
+            @Result(column = "device_type", property = "deviceType"),
+            @Result(column = "uid", property = "uid"),
+            @Result(column = "create_at", property = "createAt"),
+            @Result(column = "uid", property = "user", one = @One(select = "com.ecs.mapper.UserMapper.getById"))
+    })
     Device getByUserIdAndType(@Param("uid") String uid, @Param("deviceType") String deviceType);
 
     @Select("SELECT * FROM device;")
+    @Results({
+            @Result(id = true, column = "id", property = "id"),
+            @Result(column = "device_no", property = "deviceNo"),
+            @Result(column = "device_status", property = "deviceStatus"),
+            @Result(column = "device_type", property = "deviceType"),
+            @Result(column = "uid", property = "uid"),
+            @Result(column = "create_at", property = "createAt"),
+            @Result(column = "uid", property = "user", one = @One(select = "com.ecs.mapper.UserMapper.getById"))
+    })
     List<Device> getAll();
 
     @Insert("INSERT INTO device(device_no,device_status,uid,device_type) VALUES(#{deviceNo},#{deviceStatus},#{uid},#{deviceType});")

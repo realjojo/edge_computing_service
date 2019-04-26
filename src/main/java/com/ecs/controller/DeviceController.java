@@ -63,7 +63,6 @@ public class DeviceController {
         } else {
             response.setCode(ResponseEnum.SUCCESS.getCode());
             response.setMessage(ResponseEnum.SUCCESS.getMessage());
-            device.setUserName(deviceRegisterRequest.getUserName());
             response.setData(device);
         }
         return response;
@@ -76,9 +75,7 @@ public class DeviceController {
         deviceService.deviceLogin(id);
         response.setCode(ResponseEnum.SUCCESS.getCode());
         response.setMessage(ResponseEnum.SUCCESS.getMessage());
-        Device device = deviceService.getByDeviceId(id);
-        device.setUserName(userMapper.getUserNameByUid(device.getUid()));
-        response.setData(device);
+        response.setData(deviceService.getByDeviceId(id));
         return response;
     }
 
@@ -89,9 +86,7 @@ public class DeviceController {
         deviceService.deviceLogout(id);
         response.setCode(ResponseEnum.SUCCESS.getCode());
         response.setMessage(ResponseEnum.SUCCESS.getMessage());
-        Device device = deviceService.getByDeviceId(id);
-        device.setUserName(userMapper.getUserNameByUid(device.getUid()));
-        response.setData(device);
+        response.setData(deviceService.getByDeviceId(id));
         return response;
     }
 

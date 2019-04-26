@@ -24,15 +24,11 @@ public class DeviceService {
     }
 
     public Device getByDeviceId(String id) {
-        Device device = deviceMapper.getByDeviceId(id);
-        device.setUserName(userMapper.getUserNameByUid(device.getUid()));
-        return device;
+        return deviceMapper.getByDeviceId(id);
     }
 
     public Device getByDeviceNo(String deviceNo) {
-        Device device = deviceMapper.getByDeviceNo(deviceNo);
-        device.setUserName(userMapper.getUserNameByUid(device.getUid()));
-        return device;
+        return deviceMapper.getByDeviceNo(deviceNo);
     }
 
     public List<Device> getAll() {

@@ -21,11 +21,11 @@ public class Device {
     @ApiModelProperty(value = "设备创建时间")
     private Timestamp createAt;
 
+    @ApiModelProperty(value = "所属用户信息")
+    private User user;
+
     @ApiModelProperty(value = "所属用户id")
     private String uid;
-
-    @ApiModelProperty(value = "所属用户")
-    private String userName;
 
     public String getId() {
         return id;
@@ -51,20 +51,20 @@ public class Device {
         return deviceStatus;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public String getUid() {
         return uid;
     }
 
     public void setUid(String uid) {
         this.uid = uid;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 
     public String getDeviceType() {

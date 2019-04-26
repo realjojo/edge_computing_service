@@ -24,7 +24,7 @@ public interface UserMapper {
     String getTokenCreateTime(@Param("id") String id);
 
     @Insert("INSERT INTO user(uid,username,password,phone,create_at,token_create_at) " +
-            "VALUES(#{uid},#{userName},#{password},#{phone},#{create_at},#{token_create_at});")
+            "VALUES(#{uid},#{userName},#{password},#{phone},#{createAt},#{tokenCreateAt});")
     void createUser(User user);
 
     @Update("UPDATE user SET token_create_at=#{tokenCreateTime} WHERE id =#{id};")
