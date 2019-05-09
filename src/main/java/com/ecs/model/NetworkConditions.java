@@ -29,4 +29,9 @@ public class NetworkConditions {
         this.packet_loss = packet_loss;
     }
 
+    @Override
+    public String toString() {
+        return "Network: {delay: " + delay + ", packet_loss: " + packet_loss + "}";
+    }
+
 }

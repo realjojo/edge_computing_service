@@ -24,7 +24,7 @@ public class TestClassifyModel {
 
     private Evaluator modelEvaluator;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         TestClassifyModel clf = new TestClassifyModel("C:\\Users\\jojo\\Desktop\\项目\\edge_computing_service\\src\\main\\resources\\pmml\\KnnClassifier_Iris.pmml");
 
         List<String> featureNames = clf.getFeatureNames();
@@ -41,7 +41,6 @@ public class TestClassifyModel {
 
 //        System.out.println("waitPreSample predict result: " + clf.predict(waitPreSample).toString());
 //        System.out.println("waitPreSample predictProba result: " + clf.predictProba(waitPreSample).toString());
-
     }
 
     /**

@@ -1,5 +1,8 @@
 package com.ecs.server;
 
+import com.alibaba.fastjson.JSONObject;
+import com.ecs.model.NetworkConditions;
+import com.ecs.utils.TestNetworksUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -48,9 +51,13 @@ public class WebSocketServer {
     }
 
     @OnMessage
-    public void onMessage(String message) {
-        LOGGER.info("websocket收到客户端发来的消息:" + message);
-        sendMessage(targetClientSessionId, message);
+    public void onMessage(String message) throws IOException {
+//        LOGGER.info("websocket收到客户端发来的消息:" + message);
+        String networkConditions = TestNetworksUtil.getNetworkCondition().toString();
+        String msg = "data: {" + message + "; " + networkConditions + "}";
+//        JSONObject jsonObject = JSONObject.parseObject(networkConditions);
+        LOGGER.info("msg:" + msg);
+        sendMessage(targetClientSessionId, msg);
     }
 
     @OnError

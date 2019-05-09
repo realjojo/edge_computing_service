@@ -53,9 +53,15 @@ public class DeviceController {
 
     @ApiOperation(value = "注册新设备")
     @RequestMapping(path = "/register", method = RequestMethod.POST)
-    public HttpResponseContent createDevice(@RequestParam("deviceType") String deviceType, @RequestParam("userName") String userName) {
+    public HttpResponseContent createDevice(@RequestParam("deviceType") String deviceType, @RequestParam("deviceNo") String deviceNo, @RequestParam("userName") String userName, @RequestParam("deviceStatus") String deviceStatus) {
         HttpResponseContent response = new HttpResponseContent();
-        DeviceRegisterRequest deviceRegisterRequest = new DeviceRegisterRequest(deviceType, userName);
+        boolean ds;
+        if(deviceStatus.equals("true")) {
+            ds = true;
+        } else {
+            ds = false;
+        }
+        DeviceRegisterRequest deviceRegisterRequest = new DeviceRegisterRequest(deviceType, userName, deviceNo, ds);
         Device device = deviceService.createDevice(deviceRegisterRequest);
         if(device == null) {
             response.setCode(ResponseEnum.DEVICE_REGISTER_FAIL.getCode());

@@ -20,7 +20,7 @@ public class WebSocketController {
     @Resource
     private WebSocketServer webSocketServer;
 
-    @RequestMapping("many")
+    @RequestMapping(path = "/many", method = RequestMethod.GET)
     public String helloManyWebSocket(){
         //向所有人发送消息
         webSocketServer.sendMessage("你好~！");

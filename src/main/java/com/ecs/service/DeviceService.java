@@ -36,26 +36,33 @@ public class DeviceService {
     }
 
     public Device createDevice(DeviceRegisterRequest deviceRegisterRequest) {
-        String uid = userMapper.getUidByUserName(deviceRegisterRequest.getUserName());
-        String deviceType = deviceRegisterRequest.getDeviceType();
-        if(deviceType.equals("phone") || deviceType.equals("pad")) {
-            // 一个user只可能有一个phone和一个ipad
-            if(deviceMapper.getByUserIdAndType(uid, deviceType) != null) {
-                return null;
-            } else {
-                Device device = new Device();
-                SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");//设置日期格式
-                String date = df.format(new Date());
-                String deviceNo = deviceRegisterRequest.getDeviceType() + date;
-                device.setDeviceNo(deviceNo);
-                device.setDeviceType(deviceType);
-                device.setDeviceStatus(false);
-                device.setUid(uid);
-                deviceMapper.createDevice(device);
-                return deviceMapper.getByDeviceNo(device.getDeviceNo());
-            }
-        } else {
+        if(deviceRegisterRequest.getUserName() == null || deviceRegisterRequest.getDeviceType() == null || deviceRegisterRequest.getDeviceNo() == null) {
             return null;
+        } else {
+            String uid = userMapper.getUidByUserName(deviceRegisterRequest.getUserName());
+            String deviceType = deviceRegisterRequest.getDeviceType();
+            String deviceNo = deviceRegisterRequest.getDeviceNo();
+            if(deviceType.equals("phone") || deviceType.equals("pad")) {
+                // 一个user只可能有一个phone和一个ipad
+                if(deviceMapper.getByUserIdAndType(uid, deviceType) != null) {
+                    return null;
+                } else if(deviceMapper.getByDeviceNo(deviceNo) != null) {
+                    return null;
+                } else {
+                    Device device = new Device();
+//                SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");//设置日期格式
+//                String date = df.format(new Date());
+//                String deviceNo = deviceRegisterRequest.getDeviceType() + date;
+                    device.setDeviceNo(deviceNo);
+                    device.setDeviceType(deviceType);
+                    device.setDeviceStatus(deviceRegisterRequest.isDeviceStatus());
+                    device.setUid(uid);
+                    deviceMapper.createDevice(device);
+                    return deviceMapper.getByDeviceNo(deviceNo);
+                }
+            } else {
+                return null;
+            }
         }
     }
 
